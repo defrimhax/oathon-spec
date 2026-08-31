@@ -48,7 +48,10 @@ The vector suite is also runnable here: `pytest` after installing the SDK.
 This claim is demonstrated, not just asserted: [verifiers/go/](verifiers/go/)
 holds a second verifier implemented from the specification alone (the Python
 SDK was not consulted), passing all 21 vectors and rejecting every mutation
-case — see [verifiers/go/CONFORMANCE.md](verifiers/go/CONFORMANCE.md).
+case — and [verifiers/web/](verifiers/web/) a third, in JavaScript, that
+also powers a drag-and-drop **browser bundle verifier** (open
+verifiers/web/index.html; your bundle never leaves the browser). See the
+three-way table in [verifiers/go/CONFORMANCE.md](verifiers/go/CONFORMANCE.md).
 
 ## Trust model, honestly
 

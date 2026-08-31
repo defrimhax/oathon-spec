@@ -19,14 +19,22 @@ jobs:
         with:
           python-version: "3.12"
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Go verifier — 21 normative vectors (incl. mutation rejections)
         working-directory: verifiers/go
         run: go run . -vectors ../../spec/vectors/v0.1 | tee /tmp/go-out.txt
+
+      - name: Web/JS verifier core — same vectors under Node
+        working-directory: verifiers/web
+        run: node conformance.mjs ../../spec/vectors/v0.1 | tee /tmp/web-out.txt
 
       - name: Install Python reference SDK from lock
         run: |
           pip install --upgrade pip
           pip install -r packages/sdk-python/requirements-lock.txt
 
-      - name: Cross-implementation conformance table (Python vs Go)
-        run: python scripts/conformance.py /tmp/go-out.txt
+      - name: Cross-implementation conformance table (Python vs Go vs Web)
+        run: python scripts/conformance.py go=/tmp/go-out.txt web=/tmp/web-out.txt

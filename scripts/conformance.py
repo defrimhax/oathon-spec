@@ -1,8 +1,9 @@
 """Cross-implementation conformance table: Python (reference SDK) vs Go
 (verifiers/go, implemented from the specification alone).
 
-Usage: python scripts/conformance.py <go-output-file>
-where the file holds the Go verifier's per-case output lines.
+Usage: python scripts/conformance.py <name>=<output-file> [...]
+where each file holds that implementation's per-case output lines
+(e.g. go=/tmp/go.txt web=/tmp/web.txt).
 Prints a markdown table and exits non-zero unless BOTH columns pass on
 every case.
 """
@@ -89,28 +90,34 @@ def main() -> int:
     raw_keys = {e["key_id"]: crypto.b64u_decode(e["public_key_b64u"])
                 for e in keys["keys"].values()}
 
-    go_lines = Path(sys.argv[1]).read_text().splitlines()
-    go_status = {}
-    for line in go_lines:
-        if ": " in line and not line.startswith("TOTAL"):
-            name, status = line.split(": ", 1)
-            go_status[name] = "PASS" if status.strip() == "PASS" else "FAIL"
+    impls = []
+    for arg in sys.argv[1:]:
+        label, _, path = arg.partition("=")
+        status = {}
+        for line in Path(path).read_text().splitlines():
+            if ": " in line and not line.startswith("TOTAL"):
+                name, verdict = line.split(": ", 1)
+                status[name] = "PASS" if verdict.strip() == "PASS" else "FAIL"
+        impls.append((label.capitalize(), status))
 
     rows, ok = [], True
     for case in vectors["cases"]:
         py = "PASS" if python_result(case, keyset, raw_keys) else "FAIL"
-        go = go_status.get(case["name"], "MISSING")
-        rows.append((case["name"], py, go))
-        ok = ok and py == "PASS" and go == "PASS"
+        cols = [py] + [s.get(case["name"], "MISSING") for _, s in impls]
+        rows.append((case["name"], cols))
+        ok = ok and all(c == "PASS" for c in cols)
 
     width = max(len(r[0]) for r in rows)
-    print(f"| {'vector id'.ljust(width)} | Python | Go   |")
-    print(f"|{'-' * (width + 2)}|--------|------|")
-    for name, py, go in rows:
-        print(f"| {name.ljust(width)} | {py.ljust(6)} | {go.ljust(4)} |")
-    print(f"\n{len(rows)} vectors; Python "
-          f"{sum(1 for r in rows if r[1] == 'PASS')}/{len(rows)}, Go "
-          f"{sum(1 for r in rows if r[2] == 'PASS')}/{len(rows)}")
+    headers = ["Python"] + [label for label, _ in impls]
+    print(f"| {'vector id'.ljust(width)} | " + " | ".join(h.ljust(6) for h in headers) + " |")
+    print(f"|{'-' * (width + 2)}|" + "|".join("-" * 8 for _ in headers) + "|")
+    for name, cols in rows:
+        print(f"| {name.ljust(width)} | " + " | ".join(c.ljust(6) for c in cols) + " |")
+    totals = []
+    for i, h in enumerate(headers):
+        n = sum(1 for _, cols in rows if cols[i] == "PASS")
+        totals.append(f"{h} {n}/{len(rows)}")
+    print(f"\n{len(rows)} vectors; " + ", ".join(totals))
     return 0 if ok else 1
 
 

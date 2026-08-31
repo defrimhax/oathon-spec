@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oathon bundle verifier</title>
+<style>
+  :root {
+    --ground: #101514; --bone: #EAEFEC; --green: #4FD0B6; --red: #ff6b6b;
+    --dim: #7d8a85;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--ground); color: var(--bone);
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    margin: 0; padding: 2.5rem 1.5rem 4rem; display: flex; justify-content: center;
+  }
+  main { width: 100%; max-width: 60rem; }
+  h1 { font-size: 1.3rem; font-weight: 600; margin: 0 0 .3rem; }
+  h1 .cursor { color: var(--green); }
+  .privacy {
+    border: 1px solid var(--green); color: var(--green); padding: .55rem .9rem;
+    margin: 1.1rem 0; font-size: .85rem;
+  }
+  #drop {
+    border: 2px dashed var(--dim); padding: 3rem 1rem; text-align: center;
+    color: var(--dim); cursor: pointer; margin: 1rem 0; transition: border-color .15s;
+  }
+  #drop.hover { border-color: var(--green); color: var(--bone); }
+  #results { margin-top: 1.5rem; }
+  .row { display: flex; gap: .8rem; padding: .3rem 0; font-size: .82rem;
+         border-bottom: 1px solid #1d2422; align-items: baseline; }
+  .verdict { flex: 0 0 6.2rem; font-weight: 700; }
+  .VERIFIED { color: var(--green); }
+  .FAILED { color: var(--red); }
+  .artifact { flex: 0 0 26rem; word-break: break-all; }
+  .detail { color: var(--dim); }
+  .summary { margin: 1rem 0; font-size: .95rem; }
+  .summary.bad { color: var(--red); }
+  .summary.good { color: var(--green); }
+  footer {
+    margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #1d2422;
+    color: var(--dim); font-size: .75rem; line-height: 1.5;
+  }
+  input[type="file"] { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>oathon verify-bundle <span class="cursor">▌</span></h1>
+  <div>Independent, in-browser verification of Oathon evidence bundles.</div>
+  <div class="privacy">Your bundle never leaves this browser. All verification
+  runs locally (WebCrypto); this page makes zero network calls.</div>
+
+  <div id="drop">Drop an evidence bundle here — a bundle folder or .zip —
+  or click to choose a folder.</div>
+  <input type="file" id="picker" webkitdirectory multiple>
+
+  <div id="results"></div>
+
+  <footer>
+    <p><strong>What a green result means — and what it does not:</strong>
+    Oathon proves the integrity of evidence <em>after durable recording,
+    under the stated conditions</em> (see SECURITY.md in the specification).
+    It does not prove that the recording runtime told the truth before
+    recording, that the runtime was uncompromised, or anything about legal
+    admissibility. RFC 3161 receipts attest that a digest existed by the
+    TSA's timestamp under that TSA's certificate policy; receipt (DER/CMS)
+    verification is NOT COVERED by this page — use the SDK's
+    <code>oathon verify-bundle</code> for that. Wire identifiers remain
+    <code>WARRANT-*-V0.1</code> per the compatibility note in
+    CRYPTOGRAPHY.md §5.</p>
+  </footer>
+</main>
+
+<script type="module">
+import { verifyBundle } from "./verifier-core.mjs";
+
+const drop = document.getElementById("drop");
+const picker = document.getElementById("picker");
+const resultsEl = document.getElementById("results");
+
+function render(results) {
+  const failed = results.filter((r) => r.status === "FAILED").length;
+  const summary = document.createElement("div");
+  summary.className = "summary " + (failed ? "bad" : "good");
+  summary.textContent = failed
+    ? `✗ ${failed} of ${results.length} checks FAILED — this bundle is not intact.`
+    : `✓ All ${results.length} checks verified.`;
+  resultsEl.replaceChildren(summary);
+  for (const r of results) {
+    const row = document.createElement("div");
+    row.className = "row";
+    const v = document.createElement("span");
+    v.className = "verdict " + r.status;
+    v.textContent = r.status;
+    const a = document.createElement("span");
+    a.className = "artifact";
+    a.textContent = r.artifact;
+    const d = document.createElement("span");
+    d.className = "detail";
+    d.textContent = r.detail;
+    row.append(v, a, d);
+    resultsEl.append(row);
+  }
+}
+
+// --- input handling: folder picker, dropped folder, or dropped zip --------
+
+async function filesFromZip(bytes) {
+  // Minimal ZIP reader: central directory + stored/deflate entries via the
+  // native DecompressionStream. Enough for bundle zips.
+  const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  let eocd = -1;
+  for (let i = bytes.length - 22; i >= 0; i--) {
+    if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error("not a zip file");
+  let offset = dv.getUint32(eocd + 16, true);
+  const count = dv.getUint16(eocd + 10, true);
+  const files = new Map();
+  for (let n = 0; n < count; n++) {
+    if (dv.getUint32(offset, true) !== 0x02014b50) throw new Error("bad zip entry");
+    const method = dv.getUint16(offset + 10, true);
+    const csize = dv.getUint32(offset + 20, true);
+    const nameLen = dv.getUint16(offset + 28, true);
+    const extraLen = dv.getUint16(offset + 30, true);
+    const commentLen = dv.getUint16(offset + 32, true);
+    const local = dv.getUint32(offset + 42, true);
+    const name = new TextDecoder().decode(bytes.subarray(offset + 46, offset + 46 + nameLen));
+    const lNameLen = dv.getUint16(local + 26, true);
+    const lExtraLen = dv.getUint16(local + 28, true);
+    const start = local + 30 + lNameLen + lExtraLen;
+    const raw = bytes.subarray(start, start + csize);
+    if (!name.endsWith("/")) {
+      let data = raw;
+      if (method === 8) {
+        const stream = new Response(new Blob([raw]).stream()
+          .pipeThrough(new DecompressionStream("deflate-raw")));
+        data = new Uint8Array(await stream.arrayBuffer());
+      } else if (method !== 0) {
+        throw new Error(`unsupported zip method ${method} for ${name}`);
+      }
+      files.set(name, data);
+    }
+    offset += 46 + nameLen + extraLen + commentLen;
+  }
+  return files;
+}
+
+function stripRoot(files) {
+  // Accept bundles wrapped in a single top-level folder.
+  const names = [...files.keys()];
+  if (names.includes("manifest.json")) return files;
+  const roots = new Set(names.map((n) => n.split("/")[0]));
+  if (roots.size === 1) {
+    const root = [...roots][0] + "/";
+    const out = new Map();
+    for (const [k, v] of files) out.set(k.slice(root.length), v);
+    return out;
+  }
+  return files;
+}
+
+async function handleFiles(files) {
+  resultsEl.textContent = "verifying…";
+  try {
+    render(await verifyBundle(stripRoot(files)));
+  } catch (e) {
+    render([{ artifact: "bundle", status: "FAILED", detail: String(e.message || e) }]);
+  }
+}
+
+picker.addEventListener("change", async () => {
+  const files = new Map();
+  for (const f of picker.files) {
+    const rel = (f.webkitRelativePath || f.name).split("/").slice(1).join("/") || f.name;
+    files.set(rel, new Uint8Array(await f.arrayBuffer()));
+  }
+  handleFiles(files);
+});
+drop.addEventListener("click", () => picker.click());
+drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("hover"); });
+drop.addEventListener("dragleave", () => drop.classList.remove("hover"));
+drop.addEventListener("drop", async (e) => {
+  e.preventDefault();
+  drop.classList.remove("hover");
+  const items = [...e.dataTransfer.items];
+  const first = items[0]?.getAsFile();
+  if (first && first.name.endsWith(".zip")) {
+    handleFiles(await filesFromZip(new Uint8Array(await first.arrayBuffer())));
+    return;
+  }
+  const files = new Map();
+  async function walk(entry, prefix) {
+    if (entry.isFile) {
+      const file = await new Promise((res, rej) => entry.file(res, rej));
+      files.set(prefix + entry.name, new Uint8Array(await file.arrayBuffer()));
+    } else if (entry.isDirectory) {
+      const reader = entry.createReader();
+      const entries = await new Promise((res, rej) => reader.readEntries(res, rej));
+      for (const child of entries) await walk(child, prefix + entry.name + "/");
+    }
+  }
+  for (const item of items) {
+    const entry = item.webkitGetAsEntry?.();
+    if (entry) await walk(entry, "");
+  }
+  handleFiles(files);
+});
+</script>
+</body>
+</html>
