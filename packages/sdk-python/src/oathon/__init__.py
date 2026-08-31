@@ -3,4 +3,4 @@
 from . import crypto, jsonutil, validate, verify
 
 __all__ = ["crypto", "jsonutil", "validate", "verify"]
-__version__ = "0.1.0a1"
+__version__ = "0.1.0"

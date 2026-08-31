@@ -1,0 +1,7 @@
+# Gitleaks configuration: default rules + documented allowlist.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Threat-model prose in SECURITY.md trips the generic-api-key rule on the phrase 'leaked customer signing key, malicious/buggy future developer' — documentation, not a secret."
+paths = ['''SECURITY\.md''']

@@ -1,7 +1,22 @@
 [project]
 name = "oathon-sdk"
-version = "0.1.0a1"
-description = "Oathon v0.1 protocol SDK (Phase 1: validation and verification)"
+version = "0.1.0"
+description = "Reference SDK and CLI for the Oathon protocol: provable mandates and tamper-evident evidence for autonomous AI agents"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Oathon" }]
+keywords = ["ai-agents", "audit", "evidence", "cryptography", "rfc3161", "ed25519", "mandates"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Software Development :: Libraries",
+]
 requires-python = ">=3.12"
 dependencies = [
     "cryptography>=50.0.1",
@@ -10,6 +25,10 @@ dependencies = [
     "rfc3161-client>=1.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/defrimhax/oathon-spec"
+Specification = "https://github.com/defrimhax/oathon-spec/blob/main/CRYPTOGRAPHY.md"
+
 [project.optional-dependencies]
 test = ["pytest>=9", "hypothesis>=6"]
 
@@ -17,7 +36,7 @@ test = ["pytest>=9", "hypothesis>=6"]
 oathon = "oathon.cli:main"
 
 [build-system]
-requires = ["setuptools>=69"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]

@@ -1,0 +1,32 @@
+name: conformance
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  cross-implementation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Go verifier — 21 normative vectors (incl. mutation rejections)
+        working-directory: verifiers/go
+        run: go run . -vectors ../../spec/vectors/v0.1 | tee /tmp/go-out.txt
+
+      - name: Install Python reference SDK from lock
+        run: |
+          pip install --upgrade pip
+          pip install -r packages/sdk-python/requirements-lock.txt
+
+      - name: Cross-implementation conformance table (Python vs Go)
+        run: python scripts/conformance.py /tmp/go-out.txt

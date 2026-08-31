@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # gitleaks scans full history
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install from clean lock
+        run: |
+          pip install --upgrade pip
+          pip install -r packages/sdk-python/requirements-lock.txt
+
+      - name: JSON-schema validation cases (46 normative cases)
+        run: python -m pytest packages/sdk-python/tests/test_schemas.py -q
+
+      - name: Known-answer vectors (21 normative cases)
+        run: python -m pytest packages/sdk-python/tests/test_vectors.py -q
+
+      - name: Full suite (incl. hypothesis property tests)
+        run: python -m pytest -q
+
+      - name: Dependency audit against the locked environment
+        run: |
+          pip install pip-audit
+          pip-audit --local
+
+      - name: Secret scan (gitleaks, full history)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  wheel:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build wheel
+        run: |
+          pip install build
+          python -m build --wheel packages/sdk-python -o dist
+
+      - name: Install wheel in a fresh venv and run the CLI against the vectors
+        run: |
+          python -m venv fresh
+          fresh/bin/pip install dist/oathon_sdk-*.whl
+          PATH="$PWD/fresh/bin:$PATH" sh scripts/cli_conformance.sh fresh/bin/python

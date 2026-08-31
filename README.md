@@ -1,5 +1,8 @@
 # Oathon protocol specification and SDK
 
+[![CI](https://github.com/defrimhax/oathon-spec/actions/workflows/ci.yml/badge.svg)](https://github.com/defrimhax/oathon-spec/actions/workflows/ci.yml)
+[![conformance](https://github.com/defrimhax/oathon-spec/actions/workflows/conformance.yml/badge.svg)](https://github.com/defrimhax/oathon-spec/actions/workflows/conformance.yml)
+
 Oathon is a protocol for making autonomous AI-agent activity provable after
 the fact. An organization signs immutable **Mandates** declaring what an
 agent may do; the agent's runtime records **evidence events** into
@@ -41,6 +44,11 @@ signatures, and a real RFC 3161 receipt from a public TSA. A conforming
 implementation MUST reproduce every expected value;
 [spec/protocol-v0.1.md](spec/protocol-v0.1.md) is the implementer's guide.
 The vector suite is also runnable here: `pytest` after installing the SDK.
+
+This claim is demonstrated, not just asserted: [verifiers/go/](verifiers/go/)
+holds a second verifier implemented from the specification alone (the Python
+SDK was not consulted), passing all 21 vectors and rejecting every mutation
+case — see [verifiers/go/CONFORMANCE.md](verifiers/go/CONFORMANCE.md).
 
 ## Trust model, honestly
 
