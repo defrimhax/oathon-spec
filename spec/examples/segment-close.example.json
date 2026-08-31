@@ -1,0 +1,22 @@
+{
+  "spec_version": "0.1",
+  "segment_id": "01924f00-0000-7000-8000-PLACEHOLDERS",
+  "org_id": "org_PLACEHOLDER",
+  "agent_id": "support-refund",
+  "writer_id": "01924f00-0000-7000-8000-PLACEHOLDERW",
+  "segment_sequence": 0,
+  "prev_segment_close_hash": null,
+  "first_event_hash": "sha256:PLACEHOLDER_NOT_A_REAL_DIGEST",
+  "last_event_hash": "sha256:PLACEHOLDER_NOT_A_REAL_DIGEST",
+  "event_count": 2,
+  "first_sequence": 0,
+  "last_sequence": 1,
+  "opened_at": "2026-09-02T08:30:00.000Z",
+  "closed_at": "2026-09-03T00:00:00.000Z",
+  "signature": {
+    "alg": "Ed25519",
+    "key_id": "ed25519:PLACEHOLDER_WRITER_KEY_ID",
+    "signed_at": "2026-09-03T00:00:00.500Z",
+    "value": "PLACEHOLDER_NOT_A_REAL_SIGNATURE"
+  }
+}

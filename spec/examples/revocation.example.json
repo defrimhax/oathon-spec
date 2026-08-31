@@ -1,0 +1,14 @@
+{
+  "revocation_id": "01924f00-0000-7000-8000-PLACEHOLDER2",
+  "spec_version": "0.1",
+  "org_id": "org_PLACEHOLDER",
+  "mandate_id": "01924f00-0000-7000-8000-PLACEHOLDER1",
+  "revoked_at": "2026-10-15T09:00:00.000Z",
+  "reason": "authority superseded",
+  "signature": {
+    "alg": "Ed25519",
+    "key_id": "ed25519:PLACEHOLDER_NOT_A_REAL_KEY_ID",
+    "signed_at": "2026-10-15T09:00:01.000Z",
+    "value": "PLACEHOLDER_NOT_A_REAL_SIGNATURE"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "authorization_id": "01924f00-0000-7000-8000-PLACEHOLDER7",
+  "spec_version": "0.1",
+  "org_id": "org_PLACEHOLDER",
+  "agent_id": "support-refund",
+  "writer_id": "01924f00-0000-7000-8000-PLACEHOLDERW",
+  "writer_key_id": "ed25519:PLACEHOLDER_WRITER_KEY_ID",
+  "writer_public_key": "PLACEHOLDER_BASE64URL_32_RAW_PUBLIC_KEY_BYTES",
+  "not_before": "2026-09-01T00:00:00.000Z",
+  "not_after": "2026-12-01T00:00:00.000Z",
+  "signature": {
+    "alg": "Ed25519",
+    "key_id": "ed25519:PLACEHOLDER_NOT_A_REAL_KEY_ID",
+    "signed_at": "2026-08-31T09:05:00.000Z",
+    "value": "PLACEHOLDER_NOT_A_REAL_SIGNATURE"
+  }
+}

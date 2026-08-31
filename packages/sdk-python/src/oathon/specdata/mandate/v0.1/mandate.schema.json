@@ -1,0 +1,500 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oathon.dev/spec/mandate/v0.1/mandate.schema.json",
+  "title": "Oathon Mandate v0.1",
+  "type": "object",
+  "required": [
+    "mandate_id",
+    "spec_version",
+    "organization",
+    "principal",
+    "agent",
+    "authority",
+    "oversight",
+    "validity",
+    "signature"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "mandate_id": {
+      "$ref": "#/$defs/uuidv7"
+    },
+    "spec_version": {
+      "const": "0.1"
+    },
+    "organization": {
+      "type": "object",
+      "required": [
+        "org_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "org_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "display_name": {
+          "type": "string"
+        }
+      }
+    },
+    "principal": {
+      "type": "object",
+      "required": [
+        "subject_id",
+        "role"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "subject_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "role": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "agent": {
+      "type": "object",
+      "required": [
+        "agent_id",
+        "description",
+        "environment"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "agent_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "environment": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "model_dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "provider_neutral_descriptor"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "provider_neutral_descriptor": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "declared_version": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "required": [
+        "permitted_actions",
+        "forbidden_actions",
+        "constraints",
+        "approval_triggers"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "permitted_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "action",
+              "evaluable_fields"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "evaluable_fields": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/jsonPointer"
+                }
+              }
+            }
+          }
+        },
+        "forbidden_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/constraint"
+          }
+        },
+        "approval_triggers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "action",
+              "all"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "action": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "all": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "$ref": "#/$defs/comparison"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "oversight": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "review_cadence": {
+          "type": "string"
+        },
+        "escalation_contact_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "validity": {
+      "type": "object",
+      "required": [
+        "not_before",
+        "not_after"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "not_before": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "not_after": {
+          "$ref": "#/$defs/timestamp"
+        }
+      }
+    },
+    "supersedes": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/uuidv7"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "signature": {
+      "$ref": "#/$defs/signature"
+    }
+  },
+  "$defs": {
+    "uuidv7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "CRYPTO-006: RFC 3339 UTC, millisecond precision",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[A-Za-z0-9_-]{43}$"
+    },
+    "keyId": {
+      "type": "string",
+      "pattern": "^ed25519:[A-Za-z0-9_-]{43}$"
+    },
+    "publicKey": {
+      "type": "string",
+      "description": "32 raw Ed25519 public-key bytes, base64url no padding (CRYPTO-005)",
+      "pattern": "^[A-Za-z0-9_-]{43}$"
+    },
+    "sigValue": {
+      "type": "string",
+      "description": "64 Ed25519 signature bytes, base64url no padding",
+      "pattern": "^[A-Za-z0-9_-]{86}$"
+    },
+    "jsonPointer": {
+      "type": "string",
+      "pattern": "^/(?:[^/~]|~0|~1)*(?:/(?:[^/~]|~0|~1)*)*$"
+    },
+    "scalar": {
+      "type": [
+        "string",
+        "number",
+        "boolean",
+        "null"
+      ]
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "safeNonNegativeInt": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "signature": {
+      "type": "object",
+      "required": [
+        "alg",
+        "key_id",
+        "signed_at",
+        "value"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "alg": {
+          "const": "Ed25519"
+        },
+        "key_id": {
+          "$ref": "#/$defs/keyId"
+        },
+        "signed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "value": {
+          "$ref": "#/$defs/sigValue"
+        }
+      }
+    },
+    "money": {
+      "type": "object",
+      "required": [
+        "minor_units",
+        "currency"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "minor_units": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "required": [
+        "path",
+        "op",
+        "value"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/jsonPointer"
+        },
+        "op": {
+          "enum": [
+            "eq",
+            "neq",
+            "lt",
+            "lte",
+            "gt",
+            "gte",
+            "in"
+          ]
+        },
+        "value": {}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "enum": [
+                  "eq",
+                  "neq"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "$ref": "#/$defs/scalar"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "enum": [
+                  "lt",
+                  "lte",
+                  "gt",
+                  "gte"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "const": "in"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "$ref": "#/$defs/scalar"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "constraint": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "path",
+            "op",
+            "value"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "action": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "path": {
+              "$ref": "#/$defs/jsonPointer"
+            },
+            "op": {
+              "enum": [
+                "eq",
+                "neq",
+                "lt",
+                "lte",
+                "gt",
+                "gte",
+                "in"
+              ]
+            },
+            "value": {}
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "op": {
+                    "enum": [
+                      "eq",
+                      "neq"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "value": {
+                    "$ref": "#/$defs/scalar"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "op": {
+                    "enum": [
+                      "lt",
+                      "lte",
+                      "gt",
+                      "gte"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "value": {
+                    "type": "number"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "op": {
+                    "const": "in"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "value": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "$ref": "#/$defs/scalar"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "op",
+            "value"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "action": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "op": {
+              "const": "max_count_per_utc_day"
+            },
+            "value": {
+              "$ref": "#/$defs/safeNonNegativeInt"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

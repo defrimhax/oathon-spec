@@ -1,0 +1,26 @@
+{
+  "event_id": "01924f00-0000-7000-8000-PLACEHOLDER5",
+  "spec_version": "0.1",
+  "org_id": "org_PLACEHOLDER",
+  "mandate_id": "01924f00-0000-7000-8000-PLACEHOLDER1",
+  "agent_id": "support-refund",
+  "writer_id": "01924f00-0000-7000-8000-PLACEHOLDERW",
+  "segment_id": "01924f00-0000-7000-8000-PLACEHOLDERS",
+  "sequence": 1,
+  "operation_id": "01924f00-0000-7000-8000-PLACEHOLDERO",
+  "occurred_at": "2026-09-02T08:30:02.500Z",
+  "event_type": "action_executed",
+  "metadata": {
+    "action": "issue_refund"
+  },
+  "evaluation_metadata": {
+    "/amount/minor_units": 7500,
+    "/amount/currency": "EUR"
+  },
+  "digests": {
+    "action_params": "sha256:PLACEHOLDER_NOT_A_REAL_DIGEST"
+  },
+  "capture_source": "sdk_direct",
+  "prev_hash": "sha256:PLACEHOLDER_HASH_OF_SEQUENCE_0_EVENT",
+  "event_hash": "sha256:PLACEHOLDER_NOT_A_REAL_DIGEST"
+}

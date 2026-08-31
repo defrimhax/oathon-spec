@@ -1,0 +1,26 @@
+{
+  "WARNING": "INSECURE DETERMINISTIC TEST KEYS. Never use outside test vectors.",
+  "derivation": "seed = SHA256('WARRANT-INSECURE-TEST-KEY:' + label); Ed25519 from seed",
+  "keys": {
+    "org_key_1": {
+      "seed_hex": "b606f18f0b805c10a4b730a676edde77f1513195a60c37903fb23b26372bbd9b",
+      "public_key_b64u": "AQagr_CMMZYTMPaAGWoR3zFHsr4CoW3_0uGSVmPrWVo",
+      "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE"
+    },
+    "org_key_2": {
+      "seed_hex": "f778855ece49d8b5a90a662b033d1901ceabf28d2ea8ab0f82bf1a7f2704cc3d",
+      "public_key_b64u": "owr4JXy5LhL0TovfKZJ3ZZLm4Q_a_Z1YPUe9D90xXbA",
+      "key_id": "ed25519:--y13dR_IyEic2CM3dokRGKQuxTKJH_IyJrBrqYvQ34"
+    },
+    "writer_key_1": {
+      "seed_hex": "32bfd8d92fff0ade4177fd7c984d406f6a4cc18189700597bf489ca14271705f",
+      "public_key_b64u": "__pEgfXID3scSAcJOLv-djQzQ5bJnSV0vHUH3_fSpDU",
+      "key_id": "ed25519:dCX0wf4a5NooAjscQku0o_FLv0dIA4nKM_m8vm2tk1w"
+    },
+    "wrong_key": {
+      "seed_hex": "295c19900fa4cc11093570aa01e5a9ea7026c4650ea12559b8b8695bb5487e65",
+      "public_key_b64u": "DmZKFg5FAFum_JP7c_Ck5zZFKkz_3wxksceFE4sN48M",
+      "key_id": "ed25519:gO5EqCZ7EqkqLdErEas1R13KCl9gUhiGZ64s07K3iek"
+    }
+  }
+}

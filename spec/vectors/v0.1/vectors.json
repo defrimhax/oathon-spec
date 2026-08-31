@@ -1,0 +1,1262 @@
+{
+  "description": "Warrant v0.1 normative known-answer vectors (CRYPTOGRAPHY.md §15)",
+  "keys_file": "keys.json",
+  "cases": [
+    {
+      "name": "mandate-valid",
+      "kind": "sign-verify",
+      "type": "mandate",
+      "verify_key": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+      "object": {
+        "mandate_id": "01925000-0000-7000-8000-000000000001",
+        "spec_version": "0.1",
+        "organization": {
+          "org_id": "org_nordwind_test",
+          "display_name": "Nordwind Labs (test)"
+        },
+        "principal": {
+          "subject_id": "subj_test_head_of_support",
+          "role": "Head of Customer Support"
+        },
+        "agent": {
+          "agent_id": "support-refund",
+          "description": "Automated support refund agent (test vector)",
+          "environment": "test",
+          "model_dependencies": [
+            {
+              "provider_neutral_descriptor": "llm-primary",
+              "declared_version": "test-2026-01"
+            }
+          ]
+        },
+        "authority": {
+          "permitted_actions": [
+            {
+              "action": "issue_refund",
+              "evaluable_fields": [
+                "/amount/minor_units",
+                "/amount/currency"
+              ]
+            },
+            {
+              "action": "send_status_email",
+              "evaluable_fields": []
+            }
+          ],
+          "forbidden_actions": [
+            "delete_customer_account"
+          ],
+          "constraints": [
+            {
+              "action": "issue_refund",
+              "path": "/amount/minor_units",
+              "op": "lte",
+              "value": 20000
+            },
+            {
+              "action": "issue_refund",
+              "path": "/amount/currency",
+              "op": "in",
+              "value": [
+                "EUR",
+                "SEK"
+              ]
+            }
+          ],
+          "approval_triggers": [
+            {
+              "action": "issue_refund",
+              "all": [
+                {
+                  "path": "/amount/minor_units",
+                  "op": "gt",
+                  "value": 10000
+                },
+                {
+                  "path": "/amount/currency",
+                  "op": "eq",
+                  "value": "EUR"
+                }
+              ]
+            }
+          ]
+        },
+        "oversight": {
+          "review_cadence": "weekly",
+          "escalation_contact_ref": "subj_test_escalation"
+        },
+        "validity": {
+          "not_before": "2026-09-01T00:00:00.000Z",
+          "not_after": "2026-12-01T00:00:00.000Z"
+        },
+        "supersedes": null,
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+          "signed_at": "2026-08-31T10:15:30.123Z",
+          "value": "4g_43KoKFShFzc5p7mk-4I8KBRdxXgT2PHPUuDSdFlyrDRFtWqAFEpUei4zoyDOLmvRW4AeCpxycwpgjmfCJCg"
+        }
+      },
+      "expected": {
+        "verified": true,
+        "canonical_signing_object_b64u": "eyJhZ2VudCI6eyJhZ2VudF9pZCI6InN1cHBvcnQtcmVmdW5kIiwiZGVzY3JpcHRpb24iOiJBdXRvbWF0ZWQgc3VwcG9ydCByZWZ1bmQgYWdlbnQgKHRlc3QgdmVjdG9yKSIsImVudmlyb25tZW50IjoidGVzdCIsIm1vZGVsX2RlcGVuZGVuY2llcyI6W3siZGVjbGFyZWRfdmVyc2lvbiI6InRlc3QtMjAyNi0wMSIsInByb3ZpZGVyX25ldXRyYWxfZGVzY3JpcHRvciI6ImxsbS1wcmltYXJ5In1dfSwiYXV0aG9yaXR5Ijp7ImFwcHJvdmFsX3RyaWdnZXJzIjpbeyJhY3Rpb24iOiJpc3N1ZV9yZWZ1bmQiLCJhbGwiOlt7Im9wIjoiZ3QiLCJwYXRoIjoiL2Ftb3VudC9taW5vcl91bml0cyIsInZhbHVlIjoxMDAwMH0seyJvcCI6ImVxIiwicGF0aCI6Ii9hbW91bnQvY3VycmVuY3kiLCJ2YWx1ZSI6IkVVUiJ9XX1dLCJjb25zdHJhaW50cyI6W3siYWN0aW9uIjoiaXNzdWVfcmVmdW5kIiwib3AiOiJsdGUiLCJwYXRoIjoiL2Ftb3VudC9taW5vcl91bml0cyIsInZhbHVlIjoyMDAwMH0seyJhY3Rpb24iOiJpc3N1ZV9yZWZ1bmQiLCJvcCI6ImluIiwicGF0aCI6Ii9hbW91bnQvY3VycmVuY3kiLCJ2YWx1ZSI6WyJFVVIiLCJTRUsiXX1dLCJmb3JiaWRkZW5fYWN0aW9ucyI6WyJkZWxldGVfY3VzdG9tZXJfYWNjb3VudCJdLCJwZXJtaXR0ZWRfYWN0aW9ucyI6W3siYWN0aW9uIjoiaXNzdWVfcmVmdW5kIiwiZXZhbHVhYmxlX2ZpZWxkcyI6WyIvYW1vdW50L21pbm9yX3VuaXRzIiwiL2Ftb3VudC9jdXJyZW5jeSJdfSx7ImFjdGlvbiI6InNlbmRfc3RhdHVzX2VtYWlsIiwiZXZhbHVhYmxlX2ZpZWxkcyI6W119XX0sIm1hbmRhdGVfaWQiOiIwMTkyNTAwMC0wMDAwLTcwMDAtODAwMC0wMDAwMDAwMDAwMDEiLCJvcmdhbml6YXRpb24iOnsiZGlzcGxheV9uYW1lIjoiTm9yZHdpbmQgTGFicyAodGVzdCkiLCJvcmdfaWQiOiJvcmdfbm9yZHdpbmRfdGVzdCJ9LCJvdmVyc2lnaHQiOnsiZXNjYWxhdGlvbl9jb250YWN0X3JlZiI6InN1YmpfdGVzdF9lc2NhbGF0aW9uIiwicmV2aWV3X2NhZGVuY2UiOiJ3ZWVrbHkifSwicHJpbmNpcGFsIjp7InJvbGUiOiJIZWFkIG9mIEN1c3RvbWVyIFN1cHBvcnQiLCJzdWJqZWN0X2lkIjoic3Vial90ZXN0X2hlYWRfb2Zfc3VwcG9ydCJ9LCJzaWduYXR1cmUiOnsiYWxnIjoiRWQyNTUxOSIsImtleV9pZCI6ImVkMjU1MTk6aTRsaUw5S3FtRENSbDl1SGhESUJINjJFY2xKejRvMjFuR0k3aGhyeHplRSIsInNpZ25lZF9hdCI6IjIwMjYtMDgtMzFUMTA6MTU6MzAuMTIzWiJ9LCJzcGVjX3ZlcnNpb24iOiIwLjEiLCJzdXBlcnNlZGVzIjpudWxsLCJ2YWxpZGl0eSI6eyJub3RfYWZ0ZXIiOiIyMDI2LTEyLTAxVDAwOjAwOjAwLjAwMFoiLCJub3RfYmVmb3JlIjoiMjAyNi0wOS0wMVQwMDowMDowMC4wMDBaIn19",
+        "signature_value": "4g_43KoKFShFzc5p7mk-4I8KBRdxXgT2PHPUuDSdFlyrDRFtWqAFEpUei4zoyDOLmvRW4AeCpxycwpgjmfCJCg"
+      }
+    },
+    {
+      "name": "mandate-modified-field",
+      "kind": "sign-verify",
+      "type": "mandate",
+      "verify_key": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+      "object": {
+        "mandate_id": "01925000-0000-7000-8000-000000000001",
+        "spec_version": "0.1",
+        "organization": {
+          "org_id": "org_nordwind_test",
+          "display_name": "Nordwind Labs (test)"
+        },
+        "principal": {
+          "subject_id": "subj_test_head_of_support",
+          "role": "Head of Customer Support"
+        },
+        "agent": {
+          "agent_id": "support-refund",
+          "description": "Automated support refund agent (test vector)",
+          "environment": "test",
+          "model_dependencies": [
+            {
+              "provider_neutral_descriptor": "llm-primary",
+              "declared_version": "test-2026-01"
+            }
+          ]
+        },
+        "authority": {
+          "permitted_actions": [
+            {
+              "action": "issue_refund",
+              "evaluable_fields": [
+                "/amount/minor_units",
+                "/amount/currency"
+              ]
+            },
+            {
+              "action": "send_status_email",
+              "evaluable_fields": []
+            }
+          ],
+          "forbidden_actions": [
+            "delete_customer_account"
+          ],
+          "constraints": [
+            {
+              "action": "issue_refund",
+              "path": "/amount/minor_units",
+              "op": "lte",
+              "value": 2000000
+            },
+            {
+              "action": "issue_refund",
+              "path": "/amount/currency",
+              "op": "in",
+              "value": [
+                "EUR",
+                "SEK"
+              ]
+            }
+          ],
+          "approval_triggers": [
+            {
+              "action": "issue_refund",
+              "all": [
+                {
+                  "path": "/amount/minor_units",
+                  "op": "gt",
+                  "value": 10000
+                },
+                {
+                  "path": "/amount/currency",
+                  "op": "eq",
+                  "value": "EUR"
+                }
+              ]
+            }
+          ]
+        },
+        "oversight": {
+          "review_cadence": "weekly",
+          "escalation_contact_ref": "subj_test_escalation"
+        },
+        "validity": {
+          "not_before": "2026-09-01T00:00:00.000Z",
+          "not_after": "2026-12-01T00:00:00.000Z"
+        },
+        "supersedes": null,
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+          "signed_at": "2026-08-31T10:15:30.123Z",
+          "value": "4g_43KoKFShFzc5p7mk-4I8KBRdxXgT2PHPUuDSdFlyrDRFtWqAFEpUei4zoyDOLmvRW4AeCpxycwpgjmfCJCg"
+        }
+      },
+      "expected": {
+        "verified": false,
+        "reason": "constraint value mutated after signing"
+      }
+    },
+    {
+      "name": "mandate-modified-signing-metadata",
+      "kind": "sign-verify",
+      "type": "mandate",
+      "verify_key": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+      "object": {
+        "mandate_id": "01925000-0000-7000-8000-000000000001",
+        "spec_version": "0.1",
+        "organization": {
+          "org_id": "org_nordwind_test",
+          "display_name": "Nordwind Labs (test)"
+        },
+        "principal": {
+          "subject_id": "subj_test_head_of_support",
+          "role": "Head of Customer Support"
+        },
+        "agent": {
+          "agent_id": "support-refund",
+          "description": "Automated support refund agent (test vector)",
+          "environment": "test",
+          "model_dependencies": [
+            {
+              "provider_neutral_descriptor": "llm-primary",
+              "declared_version": "test-2026-01"
+            }
+          ]
+        },
+        "authority": {
+          "permitted_actions": [
+            {
+              "action": "issue_refund",
+              "evaluable_fields": [
+                "/amount/minor_units",
+                "/amount/currency"
+              ]
+            },
+            {
+              "action": "send_status_email",
+              "evaluable_fields": []
+            }
+          ],
+          "forbidden_actions": [
+            "delete_customer_account"
+          ],
+          "constraints": [
+            {
+              "action": "issue_refund",
+              "path": "/amount/minor_units",
+              "op": "lte",
+              "value": 20000
+            },
+            {
+              "action": "issue_refund",
+              "path": "/amount/currency",
+              "op": "in",
+              "value": [
+                "EUR",
+                "SEK"
+              ]
+            }
+          ],
+          "approval_triggers": [
+            {
+              "action": "issue_refund",
+              "all": [
+                {
+                  "path": "/amount/minor_units",
+                  "op": "gt",
+                  "value": 10000
+                },
+                {
+                  "path": "/amount/currency",
+                  "op": "eq",
+                  "value": "EUR"
+                }
+              ]
+            }
+          ]
+        },
+        "oversight": {
+          "review_cadence": "weekly",
+          "escalation_contact_ref": "subj_test_escalation"
+        },
+        "validity": {
+          "not_before": "2026-09-01T00:00:00.000Z",
+          "not_after": "2026-12-01T00:00:00.000Z"
+        },
+        "supersedes": null,
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+          "signed_at": "2026-08-31T10:15:31.000Z",
+          "value": "4g_43KoKFShFzc5p7mk-4I8KBRdxXgT2PHPUuDSdFlyrDRFtWqAFEpUei4zoyDOLmvRW4AeCpxycwpgjmfCJCg"
+        }
+      },
+      "expected": {
+        "verified": false,
+        "reason": "signed_at is covered by the signature"
+      }
+    },
+    {
+      "name": "mandate-wrong-public-key",
+      "kind": "sign-verify",
+      "type": "mandate",
+      "verify_key": "ed25519:gO5EqCZ7EqkqLdErEas1R13KCl9gUhiGZ64s07K3iek",
+      "object": {
+        "mandate_id": "01925000-0000-7000-8000-000000000001",
+        "spec_version": "0.1",
+        "organization": {
+          "org_id": "org_nordwind_test",
+          "display_name": "Nordwind Labs (test)"
+        },
+        "principal": {
+          "subject_id": "subj_test_head_of_support",
+          "role": "Head of Customer Support"
+        },
+        "agent": {
+          "agent_id": "support-refund",
+          "description": "Automated support refund agent (test vector)",
+          "environment": "test",
+          "model_dependencies": [
+            {
+              "provider_neutral_descriptor": "llm-primary",
+              "declared_version": "test-2026-01"
+            }
+          ]
+        },
+        "authority": {
+          "permitted_actions": [
+            {
+              "action": "issue_refund",
+              "evaluable_fields": [
+                "/amount/minor_units",
+                "/amount/currency"
+              ]
+            },
+            {
+              "action": "send_status_email",
+              "evaluable_fields": []
+            }
+          ],
+          "forbidden_actions": [
+            "delete_customer_account"
+          ],
+          "constraints": [
+            {
+              "action": "issue_refund",
+              "path": "/amount/minor_units",
+              "op": "lte",
+              "value": 20000
+            },
+            {
+              "action": "issue_refund",
+              "path": "/amount/currency",
+              "op": "in",
+              "value": [
+                "EUR",
+                "SEK"
+              ]
+            }
+          ],
+          "approval_triggers": [
+            {
+              "action": "issue_refund",
+              "all": [
+                {
+                  "path": "/amount/minor_units",
+                  "op": "gt",
+                  "value": 10000
+                },
+                {
+                  "path": "/amount/currency",
+                  "op": "eq",
+                  "value": "EUR"
+                }
+              ]
+            }
+          ]
+        },
+        "oversight": {
+          "review_cadence": "weekly",
+          "escalation_contact_ref": "subj_test_escalation"
+        },
+        "validity": {
+          "not_before": "2026-09-01T00:00:00.000Z",
+          "not_after": "2026-12-01T00:00:00.000Z"
+        },
+        "supersedes": null,
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+          "signed_at": "2026-08-31T10:15:30.123Z",
+          "value": "4g_43KoKFShFzc5p7mk-4I8KBRdxXgT2PHPUuDSdFlyrDRFtWqAFEpUei4zoyDOLmvRW4AeCpxycwpgjmfCJCg"
+        }
+      },
+      "expected": {
+        "verified": false,
+        "reason": "key_id mismatch for provided public key"
+      }
+    },
+    {
+      "name": "revocation-valid",
+      "kind": "sign-verify",
+      "type": "revocation",
+      "verify_key": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+      "object": {
+        "revocation_id": "01925000-0000-7000-8000-000000000002",
+        "spec_version": "0.1",
+        "org_id": "org_nordwind_test",
+        "mandate_id": "01925000-0000-7000-8000-000000000001",
+        "revoked_at": "2026-10-15T09:00:00.000Z",
+        "reason": "authority superseded",
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+          "signed_at": "2026-10-15T09:00:01.000Z",
+          "value": "MNFEsWPCSbv8Jk-ijtXQRENbGZhBDweoWU3RXJGjfYXitw47oqfnzDlQEzal7JUHZoCiPXYNcvfImFyrury7BQ"
+        }
+      },
+      "expected": {
+        "verified": true,
+        "signature_value": "MNFEsWPCSbv8Jk-ijtXQRENbGZhBDweoWU3RXJGjfYXitw47oqfnzDlQEzal7JUHZoCiPXYNcvfImFyrury7BQ"
+      }
+    },
+    {
+      "name": "key-genesis-valid",
+      "kind": "sign-verify",
+      "type": "key-genesis",
+      "verify_key": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+      "object": {
+        "genesis_id": "01925000-0000-7000-8000-000000000003",
+        "spec_version": "0.1",
+        "org_id": "org_nordwind_test",
+        "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+        "public_key": "AQagr_CMMZYTMPaAGWoR3zFHsr4CoW3_0uGSVmPrWVo",
+        "created_at": "2026-08-31T09:00:00.000Z",
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+          "signed_at": "2026-08-31T09:00:00.000Z",
+          "value": "Zawals7TuOJ4CjhWLy_oYeYwavjrOO4dKOCdPU_RxRmpV6xV6fHHCRbUpfNF16YMkuQ9reJtQTKfmRQgwYJSDg"
+        }
+      },
+      "expected": {
+        "verified": true,
+        "signature_value": "Zawals7TuOJ4CjhWLy_oYeYwavjrOO4dKOCdPU_RxRmpV6xV6fHHCRbUpfNF16YMkuQ9reJtQTKfmRQgwYJSDg"
+      }
+    },
+    {
+      "name": "key-transition-valid",
+      "kind": "sign-verify",
+      "type": "key-transition",
+      "verify_key": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+      "object": {
+        "transition_id": "01925000-0000-7000-8000-000000000004",
+        "spec_version": "0.1",
+        "org_id": "org_nordwind_test",
+        "old_key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+        "new_key_id": "ed25519:--y13dR_IyEic2CM3dokRGKQuxTKJH_IyJrBrqYvQ34",
+        "new_public_key": "owr4JXy5LhL0TovfKZJ3ZZLm4Q_a_Z1YPUe9D90xXbA",
+        "effective_at": "2026-11-01T00:00:00.000Z",
+        "reason": "scheduled rotation",
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+          "signed_at": "2026-10-31T23:59:00.000Z",
+          "value": "EDQcF9LaFXEEQwokX5viaCrce6q6JymMT2pcz6_4hCXSkllm-95fQWGrAjBhyCrKFcr4-yVtVxsRbRYRfwczCQ"
+        }
+      },
+      "expected": {
+        "verified": true,
+        "signature_value": "EDQcF9LaFXEEQwokX5viaCrce6q6JymMT2pcz6_4hCXSkllm-95fQWGrAjBhyCrKFcr4-yVtVxsRbRYRfwczCQ"
+      }
+    },
+    {
+      "name": "writer-authorization-valid",
+      "kind": "sign-verify",
+      "type": "writer-authorization",
+      "verify_key": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+      "object": {
+        "authorization_id": "01925000-0000-7000-8000-000000000005",
+        "spec_version": "0.1",
+        "org_id": "org_nordwind_test",
+        "agent_id": "support-refund",
+        "writer_id": "01925000-0000-7000-8000-000000000900",
+        "writer_key_id": "ed25519:dCX0wf4a5NooAjscQku0o_FLv0dIA4nKM_m8vm2tk1w",
+        "writer_public_key": "__pEgfXID3scSAcJOLv-djQzQ5bJnSV0vHUH3_fSpDU",
+        "not_before": "2026-09-01T00:00:00.000Z",
+        "not_after": "2026-12-01T00:00:00.000Z",
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+          "signed_at": "2026-08-31T09:05:00.000Z",
+          "value": "BrMkJEs5d2_LX6Mv4ocxE3OFHCaQhNSl4OclsffWk1Vs2DFv6btRIP3ojyfUrBrX711AiP5Q8dI3jM8P-hlxCg"
+        }
+      },
+      "expected": {
+        "verified": true,
+        "signature_value": "BrMkJEs5d2_LX6Mv4ocxE3OFHCaQhNSl4OclsffWk1Vs2DFv6btRIP3ojyfUrBrX711AiP5Q8dI3jM8P-hlxCg"
+      }
+    },
+    {
+      "name": "event-genesis",
+      "kind": "event-hash",
+      "object": {
+        "event_id": "01925000-0000-7000-8000-000000000010",
+        "spec_version": "0.1",
+        "org_id": "org_nordwind_test",
+        "mandate_id": "01925000-0000-7000-8000-000000000001",
+        "agent_id": "support-refund",
+        "writer_id": "01925000-0000-7000-8000-000000000900",
+        "segment_id": "01925000-0000-7000-8000-000000000100",
+        "sequence": 0,
+        "operation_id": "01925000-0000-7000-8000-000000000500",
+        "occurred_at": "2026-09-02T08:30:00.000Z",
+        "event_type": "action_requested",
+        "capture_source": "sdk_direct",
+        "prev_hash": null,
+        "metadata": {
+          "action": "issue_refund"
+        },
+        "evaluation_metadata": {
+          "/amount/minor_units": 7500,
+          "/amount/currency": "EUR"
+        },
+        "digests": {
+          "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+        }
+      },
+      "expected": {
+        "canonical_b64u": "eyJhZ2VudF9pZCI6InN1cHBvcnQtcmVmdW5kIiwiY2FwdHVyZV9zb3VyY2UiOiJzZGtfZGlyZWN0IiwiZGlnZXN0cyI6eyJhY3Rpb25fcGFyYW1zIjoic2hhMjU2OnZ5N09XRzA0Qml1TWFwME1YQ3B5ejJHdFlhVXZ6eG9XcXlvMHBKamtLd2MifSwiZXZhbHVhdGlvbl9tZXRhZGF0YSI6eyIvYW1vdW50L2N1cnJlbmN5IjoiRVVSIiwiL2Ftb3VudC9taW5vcl91bml0cyI6NzUwMH0sImV2ZW50X2lkIjoiMDE5MjUwMDAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwMDEwIiwiZXZlbnRfdHlwZSI6ImFjdGlvbl9yZXF1ZXN0ZWQiLCJtYW5kYXRlX2lkIjoiMDE5MjUwMDAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwMDAxIiwibWV0YWRhdGEiOnsiYWN0aW9uIjoiaXNzdWVfcmVmdW5kIn0sIm9jY3VycmVkX2F0IjoiMjAyNi0wOS0wMlQwODozMDowMC4wMDBaIiwib3BlcmF0aW9uX2lkIjoiMDE5MjUwMDAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwNTAwIiwib3JnX2lkIjoib3JnX25vcmR3aW5kX3Rlc3QiLCJwcmV2X2hhc2giOm51bGwsInNlZ21lbnRfaWQiOiIwMTkyNTAwMC0wMDAwLTcwMDAtODAwMC0wMDAwMDAwMDAxMDAiLCJzZXF1ZW5jZSI6MCwic3BlY192ZXJzaW9uIjoiMC4xIiwid3JpdGVyX2lkIjoiMDE5MjUwMDAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwOTAwIn0",
+        "event_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s"
+      }
+    },
+    {
+      "name": "event-second-chained",
+      "kind": "event-hash",
+      "object": {
+        "event_id": "01925000-0000-7000-8000-000000000011",
+        "spec_version": "0.1",
+        "org_id": "org_nordwind_test",
+        "mandate_id": "01925000-0000-7000-8000-000000000001",
+        "agent_id": "support-refund",
+        "writer_id": "01925000-0000-7000-8000-000000000900",
+        "segment_id": "01925000-0000-7000-8000-000000000100",
+        "sequence": 1,
+        "operation_id": "01925000-0000-7000-8000-000000000500",
+        "occurred_at": "2026-09-02T08:30:02.500Z",
+        "event_type": "action_executed",
+        "capture_source": "sdk_direct",
+        "prev_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s",
+        "metadata": {
+          "action": "issue_refund",
+          "status": "succeeded"
+        },
+        "evaluation_metadata": {
+          "/amount/minor_units": 7500,
+          "/amount/currency": "EUR"
+        },
+        "digests": {
+          "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+        }
+      },
+      "expected": {
+        "event_hash": "sha256:jCtJTLGocH_oM4x8GmGaAeT3VFTDzYzO8niRDlccI2Y"
+      }
+    },
+    {
+      "name": "event-unicode",
+      "kind": "event-hash",
+      "object": {
+        "event_id": "01925000-0000-7000-8000-000000000013",
+        "spec_version": "0.1",
+        "org_id": "org_nordwind_test",
+        "mandate_id": "01925000-0000-7000-8000-000000000001",
+        "agent_id": "support-refund",
+        "writer_id": "01925000-0000-7000-8000-000000000900",
+        "segment_id": "01925000-0000-7000-8000-000000000101",
+        "sequence": 0,
+        "operation_id": "01925000-0000-7000-8000-000000000500",
+        "occurred_at": "2026-09-02T09:00:00.000Z",
+        "event_type": "action_requested",
+        "capture_source": "sdk_direct",
+        "prev_hash": null,
+        "metadata": {
+          "action": "issue_refund"
+        },
+        "evaluation_metadata": {
+          "/amount/minor_units": 7500,
+          "/amount/currency": "EUR",
+          "/note": "Återköp – ÅÄÖ – 縢 – é́ – 😀"
+        },
+        "digests": {
+          "action_params": "sha256:XGoQk7g0QF8COvETUQsAmDvDv2GarAHtOL4yZexuues"
+        }
+      },
+      "expected": {
+        "canonical_b64u": "eyJhZ2VudF9pZCI6InN1cHBvcnQtcmVmdW5kIiwiY2FwdHVyZV9zb3VyY2UiOiJzZGtfZGlyZWN0IiwiZGlnZXN0cyI6eyJhY3Rpb25fcGFyYW1zIjoic2hhMjU2OlhHb1FrN2cwUUY4Q092RVRVUXNBbUR2RHYyR2FyQUh0T0w0eVpleHV1ZXMifSwiZXZhbHVhdGlvbl9tZXRhZGF0YSI6eyIvYW1vdW50L2N1cnJlbmN5IjoiRVVSIiwiL2Ftb3VudC9taW5vcl91bml0cyI6NzUwMCwiL25vdGUiOiLDhXRlcmvDtnAg4oCTIMOFw4TDliDigJMg57iiIOKAkyDDqcyBIOKAkyDwn5iAIn0sImV2ZW50X2lkIjoiMDE5MjUwMDAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwMDEzIiwiZXZlbnRfdHlwZSI6ImFjdGlvbl9yZXF1ZXN0ZWQiLCJtYW5kYXRlX2lkIjoiMDE5MjUwMDAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwMDAxIiwibWV0YWRhdGEiOnsiYWN0aW9uIjoiaXNzdWVfcmVmdW5kIn0sIm9jY3VycmVkX2F0IjoiMjAyNi0wOS0wMlQwOTowMDowMC4wMDBaIiwib3BlcmF0aW9uX2lkIjoiMDE5MjUwMDAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwNTAwIiwib3JnX2lkIjoib3JnX25vcmR3aW5kX3Rlc3QiLCJwcmV2X2hhc2giOm51bGwsInNlZ21lbnRfaWQiOiIwMTkyNTAwMC0wMDAwLTcwMDAtODAwMC0wMDAwMDAwMDAxMDEiLCJzZXF1ZW5jZSI6MCwic3BlY192ZXJzaW9uIjoiMC4xIiwid3JpdGVyX2lkIjoiMDE5MjUwMDAtMDAwMC03MDAwLTgwMDAtMDAwMDAwMDAwOTAwIn0",
+        "event_hash": "sha256:Fy-hqf0SSU9e4g2oHv-NSn_N5kq4R2bPZBj0YOc5VCU"
+      }
+    },
+    {
+      "name": "chain-valid",
+      "kind": "chain",
+      "events": [
+        {
+          "event_id": "01925000-0000-7000-8000-000000000010",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 0,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:30:00.000Z",
+          "event_type": "action_requested",
+          "capture_source": "sdk_direct",
+          "prev_hash": null,
+          "metadata": {
+            "action": "issue_refund"
+          },
+          "evaluation_metadata": {
+            "/amount/minor_units": 7500,
+            "/amount/currency": "EUR"
+          },
+          "digests": {
+            "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+          },
+          "event_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s"
+        },
+        {
+          "event_id": "01925000-0000-7000-8000-000000000011",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 1,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:30:02.500Z",
+          "event_type": "action_executed",
+          "capture_source": "sdk_direct",
+          "prev_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s",
+          "metadata": {
+            "action": "issue_refund",
+            "status": "succeeded"
+          },
+          "evaluation_metadata": {
+            "/amount/minor_units": 7500,
+            "/amount/currency": "EUR"
+          },
+          "digests": {
+            "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+          },
+          "event_hash": "sha256:jCtJTLGocH_oM4x8GmGaAeT3VFTDzYzO8niRDlccI2Y"
+        },
+        {
+          "event_id": "01925000-0000-7000-8000-000000000012",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 2,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:31:00.000Z",
+          "event_type": "error",
+          "capture_source": "sdk_direct",
+          "prev_hash": "sha256:jCtJTLGocH_oM4x8GmGaAeT3VFTDzYzO8niRDlccI2Y",
+          "metadata": {
+            "error_class": "downstream_timeout"
+          },
+          "digests": {},
+          "event_hash": "sha256:U95J_iv_5x6EFkllcga9N5uPDt27KJLPLwK4HcSB7tI"
+        }
+      ],
+      "expected": {
+        "verified": true
+      }
+    },
+    {
+      "name": "chain-event-mutation",
+      "kind": "chain",
+      "events": [
+        {
+          "event_id": "01925000-0000-7000-8000-000000000010",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 0,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:30:00.000Z",
+          "event_type": "action_requested",
+          "capture_source": "sdk_direct",
+          "prev_hash": null,
+          "metadata": {
+            "action": "issue_refund"
+          },
+          "evaluation_metadata": {
+            "/amount/minor_units": 7500,
+            "/amount/currency": "EUR"
+          },
+          "digests": {
+            "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+          },
+          "event_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s"
+        },
+        {
+          "event_id": "01925000-0000-7000-8000-000000000011",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 1,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:30:02.500Z",
+          "event_type": "action_executed",
+          "capture_source": "sdk_direct",
+          "prev_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s",
+          "metadata": {
+            "action": "issue_refund",
+            "status": "succeeded"
+          },
+          "evaluation_metadata": {
+            "/amount/minor_units": 75000,
+            "/amount/currency": "EUR"
+          },
+          "digests": {
+            "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+          },
+          "event_hash": "sha256:jCtJTLGocH_oM4x8GmGaAeT3VFTDzYzO8niRDlccI2Y"
+        },
+        {
+          "event_id": "01925000-0000-7000-8000-000000000012",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 2,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:31:00.000Z",
+          "event_type": "error",
+          "capture_source": "sdk_direct",
+          "prev_hash": "sha256:jCtJTLGocH_oM4x8GmGaAeT3VFTDzYzO8niRDlccI2Y",
+          "metadata": {
+            "error_class": "downstream_timeout"
+          },
+          "digests": {},
+          "event_hash": "sha256:U95J_iv_5x6EFkllcga9N5uPDt27KJLPLwK4HcSB7tI"
+        }
+      ],
+      "expected": {
+        "verified": false,
+        "reason": "mutated event fails hash check (INV-007)"
+      }
+    },
+    {
+      "name": "chain-predecessor-mutation",
+      "kind": "chain",
+      "events": [
+        {
+          "event_id": "01925000-0000-7000-8000-000000000010",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 0,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:30:00.000Z",
+          "event_type": "action_requested",
+          "capture_source": "sdk_direct",
+          "prev_hash": null,
+          "metadata": {
+            "action": "issue_refund"
+          },
+          "evaluation_metadata": {
+            "/amount/minor_units": 75000,
+            "/amount/currency": "EUR"
+          },
+          "digests": {
+            "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+          },
+          "event_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s"
+        },
+        {
+          "event_id": "01925000-0000-7000-8000-000000000011",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 1,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:30:02.500Z",
+          "event_type": "action_executed",
+          "capture_source": "sdk_direct",
+          "prev_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s",
+          "metadata": {
+            "action": "issue_refund",
+            "status": "succeeded"
+          },
+          "evaluation_metadata": {
+            "/amount/minor_units": 7500,
+            "/amount/currency": "EUR"
+          },
+          "digests": {
+            "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+          },
+          "event_hash": "sha256:jCtJTLGocH_oM4x8GmGaAeT3VFTDzYzO8niRDlccI2Y"
+        },
+        {
+          "event_id": "01925000-0000-7000-8000-000000000012",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 2,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:31:00.000Z",
+          "event_type": "error",
+          "capture_source": "sdk_direct",
+          "prev_hash": "sha256:jCtJTLGocH_oM4x8GmGaAeT3VFTDzYzO8niRDlccI2Y",
+          "metadata": {
+            "error_class": "downstream_timeout"
+          },
+          "digests": {},
+          "event_hash": "sha256:U95J_iv_5x6EFkllcga9N5uPDt27KJLPLwK4HcSB7tI"
+        }
+      ],
+      "expected": {
+        "verified": false,
+        "reason": "mutated predecessor breaks stored hash and prev link"
+      }
+    },
+    {
+      "name": "digest-json",
+      "kind": "digest-json",
+      "value": {
+        "b": [
+          1,
+          2.5,
+          "tvÅ"
+        ],
+        "a": {
+          "nested": true
+        },
+        "n": null
+      },
+      "expected": {
+        "digest": "sha256:xPPVCG9LWjn1D4TCs5wXdHTy1E0VnNZ3y2aa6iLSPCo"
+      }
+    },
+    {
+      "name": "digest-bytes",
+      "kind": "digest-bytes",
+      "value_hex": "000102030405060708090a0b0c0d0e0f",
+      "expected": {
+        "digest": "sha256:RgZ8TcKIXLmHW6C0cEYkCNItIrmlyuqYel1816pCz00"
+      }
+    },
+    {
+      "name": "segment-close-valid",
+      "kind": "segment",
+      "close": {
+        "spec_version": "0.1",
+        "segment_id": "01925000-0000-7000-8000-000000000100",
+        "org_id": "org_nordwind_test",
+        "agent_id": "support-refund",
+        "writer_id": "01925000-0000-7000-8000-000000000900",
+        "segment_sequence": 0,
+        "prev_segment_close_hash": null,
+        "first_event_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s",
+        "last_event_hash": "sha256:U95J_iv_5x6EFkllcga9N5uPDt27KJLPLwK4HcSB7tI",
+        "event_count": 3,
+        "first_sequence": 0,
+        "last_sequence": 2,
+        "opened_at": "2026-09-02T08:30:00.000Z",
+        "closed_at": "2026-09-03T00:00:00.000Z",
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:dCX0wf4a5NooAjscQku0o_FLv0dIA4nKM_m8vm2tk1w",
+          "signed_at": "2026-09-03T00:00:00.500Z",
+          "value": "tWXGDkYduP40yhWS5h0FC6AJqkSospm071p6t7Ns4AbYis8eWms8zM22EWiV8irtUYm6s8zJKotgj7jwiJZ7CQ"
+        }
+      },
+      "events": [
+        {
+          "event_id": "01925000-0000-7000-8000-000000000010",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 0,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:30:00.000Z",
+          "event_type": "action_requested",
+          "capture_source": "sdk_direct",
+          "prev_hash": null,
+          "metadata": {
+            "action": "issue_refund"
+          },
+          "evaluation_metadata": {
+            "/amount/minor_units": 7500,
+            "/amount/currency": "EUR"
+          },
+          "digests": {
+            "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+          },
+          "event_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s"
+        },
+        {
+          "event_id": "01925000-0000-7000-8000-000000000011",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 1,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:30:02.500Z",
+          "event_type": "action_executed",
+          "capture_source": "sdk_direct",
+          "prev_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s",
+          "metadata": {
+            "action": "issue_refund",
+            "status": "succeeded"
+          },
+          "evaluation_metadata": {
+            "/amount/minor_units": 7500,
+            "/amount/currency": "EUR"
+          },
+          "digests": {
+            "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+          },
+          "event_hash": "sha256:jCtJTLGocH_oM4x8GmGaAeT3VFTDzYzO8niRDlccI2Y"
+        },
+        {
+          "event_id": "01925000-0000-7000-8000-000000000012",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 2,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:31:00.000Z",
+          "event_type": "error",
+          "capture_source": "sdk_direct",
+          "prev_hash": "sha256:jCtJTLGocH_oM4x8GmGaAeT3VFTDzYzO8niRDlccI2Y",
+          "metadata": {
+            "error_class": "downstream_timeout"
+          },
+          "digests": {},
+          "event_hash": "sha256:U95J_iv_5x6EFkllcga9N5uPDt27KJLPLwK4HcSB7tI"
+        }
+      ],
+      "writer_auth": {
+        "authorization_id": "01925000-0000-7000-8000-000000000005",
+        "spec_version": "0.1",
+        "org_id": "org_nordwind_test",
+        "agent_id": "support-refund",
+        "writer_id": "01925000-0000-7000-8000-000000000900",
+        "writer_key_id": "ed25519:dCX0wf4a5NooAjscQku0o_FLv0dIA4nKM_m8vm2tk1w",
+        "writer_public_key": "__pEgfXID3scSAcJOLv-djQzQ5bJnSV0vHUH3_fSpDU",
+        "not_before": "2026-09-01T00:00:00.000Z",
+        "not_after": "2026-12-01T00:00:00.000Z",
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+          "signed_at": "2026-08-31T09:05:00.000Z",
+          "value": "BrMkJEs5d2_LX6Mv4ocxE3OFHCaQhNSl4OclsffWk1Vs2DFv6btRIP3ojyfUrBrX711AiP5Q8dI3jM8P-hlxCg"
+        }
+      },
+      "expected": {
+        "verified": true,
+        "signature_value": "tWXGDkYduP40yhWS5h0FC6AJqkSospm071p6t7Ns4AbYis8eWms8zM22EWiV8irtUYm6s8zJKotgj7jwiJZ7CQ"
+      }
+    },
+    {
+      "name": "segment-close-wrong-writer-auth",
+      "kind": "segment",
+      "close": {
+        "spec_version": "0.1",
+        "segment_id": "01925000-0000-7000-8000-000000000100",
+        "org_id": "org_nordwind_test",
+        "agent_id": "support-refund",
+        "writer_id": "01925000-0000-7000-8000-000000000900",
+        "segment_sequence": 0,
+        "prev_segment_close_hash": null,
+        "first_event_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s",
+        "last_event_hash": "sha256:U95J_iv_5x6EFkllcga9N5uPDt27KJLPLwK4HcSB7tI",
+        "event_count": 3,
+        "first_sequence": 0,
+        "last_sequence": 2,
+        "opened_at": "2026-09-02T08:30:00.000Z",
+        "closed_at": "2026-09-03T00:00:00.000Z",
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:dCX0wf4a5NooAjscQku0o_FLv0dIA4nKM_m8vm2tk1w",
+          "signed_at": "2026-09-03T00:00:00.500Z",
+          "value": "tWXGDkYduP40yhWS5h0FC6AJqkSospm071p6t7Ns4AbYis8eWms8zM22EWiV8irtUYm6s8zJKotgj7jwiJZ7CQ"
+        }
+      },
+      "events": [
+        {
+          "event_id": "01925000-0000-7000-8000-000000000010",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 0,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:30:00.000Z",
+          "event_type": "action_requested",
+          "capture_source": "sdk_direct",
+          "prev_hash": null,
+          "metadata": {
+            "action": "issue_refund"
+          },
+          "evaluation_metadata": {
+            "/amount/minor_units": 7500,
+            "/amount/currency": "EUR"
+          },
+          "digests": {
+            "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+          },
+          "event_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s"
+        },
+        {
+          "event_id": "01925000-0000-7000-8000-000000000011",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 1,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:30:02.500Z",
+          "event_type": "action_executed",
+          "capture_source": "sdk_direct",
+          "prev_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s",
+          "metadata": {
+            "action": "issue_refund",
+            "status": "succeeded"
+          },
+          "evaluation_metadata": {
+            "/amount/minor_units": 7500,
+            "/amount/currency": "EUR"
+          },
+          "digests": {
+            "action_params": "sha256:vy7OWG04BiuMap0MXCpyz2GtYaUvzxoWqyo0pJjkKwc"
+          },
+          "event_hash": "sha256:jCtJTLGocH_oM4x8GmGaAeT3VFTDzYzO8niRDlccI2Y"
+        },
+        {
+          "event_id": "01925000-0000-7000-8000-000000000012",
+          "spec_version": "0.1",
+          "org_id": "org_nordwind_test",
+          "mandate_id": "01925000-0000-7000-8000-000000000001",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "sequence": 2,
+          "operation_id": "01925000-0000-7000-8000-000000000500",
+          "occurred_at": "2026-09-02T08:31:00.000Z",
+          "event_type": "error",
+          "capture_source": "sdk_direct",
+          "prev_hash": "sha256:jCtJTLGocH_oM4x8GmGaAeT3VFTDzYzO8niRDlccI2Y",
+          "metadata": {
+            "error_class": "downstream_timeout"
+          },
+          "digests": {},
+          "event_hash": "sha256:U95J_iv_5x6EFkllcga9N5uPDt27KJLPLwK4HcSB7tI"
+        }
+      ],
+      "writer_auth": {
+        "authorization_id": "01925000-0000-7000-8000-000000000005",
+        "spec_version": "0.1",
+        "org_id": "org_nordwind_test",
+        "agent_id": "support-refund",
+        "writer_id": "01925000-0000-7000-8000-000000000999",
+        "writer_key_id": "ed25519:dCX0wf4a5NooAjscQku0o_FLv0dIA4nKM_m8vm2tk1w",
+        "writer_public_key": "__pEgfXID3scSAcJOLv-djQzQ5bJnSV0vHUH3_fSpDU",
+        "not_before": "2026-09-01T00:00:00.000Z",
+        "not_after": "2026-12-01T00:00:00.000Z",
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:i4liL9KqmDCRl9uHhDIBH62EclJz4o21nGI7hhrxzeE",
+          "signed_at": "2026-08-31T09:05:00.000Z",
+          "value": "BrMkJEs5d2_LX6Mv4ocxE3OFHCaQhNSl4OclsffWk1Vs2DFv6btRIP3ojyfUrBrX711AiP5Q8dI3jM8P-hlxCg"
+        }
+      },
+      "expected": {
+        "verified": false,
+        "reason": "authorization does not cover this writer_id"
+      }
+    },
+    {
+      "name": "anchor-input",
+      "kind": "anchor",
+      "object": {
+        "spec_version": "0.1",
+        "segment_id": "01925000-0000-7000-8000-000000000100",
+        "org_id": "org_nordwind_test",
+        "agent_id": "support-refund",
+        "writer_id": "01925000-0000-7000-8000-000000000900",
+        "segment_sequence": 0,
+        "prev_segment_close_hash": null,
+        "first_event_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s",
+        "last_event_hash": "sha256:U95J_iv_5x6EFkllcga9N5uPDt27KJLPLwK4HcSB7tI",
+        "event_count": 3,
+        "first_sequence": 0,
+        "last_sequence": 2,
+        "opened_at": "2026-09-02T08:30:00.000Z",
+        "closed_at": "2026-09-03T00:00:00.000Z",
+        "signature": {
+          "alg": "Ed25519",
+          "key_id": "ed25519:dCX0wf4a5NooAjscQku0o_FLv0dIA4nKM_m8vm2tk1w",
+          "signed_at": "2026-09-03T00:00:00.500Z",
+          "value": "tWXGDkYduP40yhWS5h0FC6AJqkSospm071p6t7Ns4AbYis8eWms8zM22EWiV8irtUYm6s8zJKotgj7jwiJZ7CQ"
+        }
+      },
+      "expected": {
+        "digest": "sha256:9_r08B4OgqACM89-qXKHZFwFzWnGSc_iK6upkcWW_SY"
+      }
+    },
+    {
+      "name": "segment-chain-valid",
+      "kind": "segment-chain",
+      "closes": [
+        {
+          "spec_version": "0.1",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "org_id": "org_nordwind_test",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_sequence": 0,
+          "prev_segment_close_hash": null,
+          "first_event_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s",
+          "last_event_hash": "sha256:U95J_iv_5x6EFkllcga9N5uPDt27KJLPLwK4HcSB7tI",
+          "event_count": 3,
+          "first_sequence": 0,
+          "last_sequence": 2,
+          "opened_at": "2026-09-02T08:30:00.000Z",
+          "closed_at": "2026-09-03T00:00:00.000Z",
+          "signature": {
+            "alg": "Ed25519",
+            "key_id": "ed25519:dCX0wf4a5NooAjscQku0o_FLv0dIA4nKM_m8vm2tk1w",
+            "signed_at": "2026-09-03T00:00:00.500Z",
+            "value": "tWXGDkYduP40yhWS5h0FC6AJqkSospm071p6t7Ns4AbYis8eWms8zM22EWiV8irtUYm6s8zJKotgj7jwiJZ7CQ"
+          }
+        },
+        {
+          "spec_version": "0.1",
+          "segment_id": "01925000-0000-7000-8000-000000000101",
+          "org_id": "org_nordwind_test",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_sequence": 1,
+          "prev_segment_close_hash": "sha256:9_r08B4OgqACM89-qXKHZFwFzWnGSc_iK6upkcWW_SY",
+          "first_event_hash": "sha256:Fy-hqf0SSU9e4g2oHv-NSn_N5kq4R2bPZBj0YOc5VCU",
+          "last_event_hash": "sha256:Fy-hqf0SSU9e4g2oHv-NSn_N5kq4R2bPZBj0YOc5VCU",
+          "event_count": 1,
+          "first_sequence": 0,
+          "last_sequence": 0,
+          "opened_at": "2026-09-03T00:00:00.000Z",
+          "closed_at": "2026-09-04T00:00:00.000Z",
+          "signature": {
+            "alg": "Ed25519",
+            "key_id": "ed25519:dCX0wf4a5NooAjscQku0o_FLv0dIA4nKM_m8vm2tk1w",
+            "signed_at": "2026-09-04T00:00:00.500Z",
+            "value": "HdKhrvAFNTdTR63qGVmW7HV8n5S52oE00WmFRHWYqOFBZD4QksyccgxOYcx02ETqlmBEHzclMaL-rxWoLVUGDw"
+          }
+        }
+      ],
+      "expected": {
+        "verified": true
+      }
+    },
+    {
+      "name": "segment-chain-broken-link",
+      "kind": "segment-chain",
+      "closes": [
+        {
+          "spec_version": "0.1",
+          "segment_id": "01925000-0000-7000-8000-000000000100",
+          "org_id": "org_nordwind_test",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_sequence": 0,
+          "prev_segment_close_hash": null,
+          "first_event_hash": "sha256:QeK5ffFVpTRgddXVwsK2CcFD0SSwoM_8VwSkpPHcf-s",
+          "last_event_hash": "sha256:U95J_iv_5x6EFkllcga9N5uPDt27KJLPLwK4HcSB7tI",
+          "event_count": 3,
+          "first_sequence": 0,
+          "last_sequence": 2,
+          "opened_at": "2026-09-02T08:30:00.000Z",
+          "closed_at": "2026-09-03T00:00:00.000Z",
+          "signature": {
+            "alg": "Ed25519",
+            "key_id": "ed25519:dCX0wf4a5NooAjscQku0o_FLv0dIA4nKM_m8vm2tk1w",
+            "signed_at": "2026-09-03T00:00:00.500Z",
+            "value": "tWXGDkYduP40yhWS5h0FC6AJqkSospm071p6t7Ns4AbYis8eWms8zM22EWiV8irtUYm6s8zJKotgj7jwiJZ7CQ"
+          }
+        },
+        {
+          "spec_version": "0.1",
+          "segment_id": "01925000-0000-7000-8000-000000000101",
+          "org_id": "org_nordwind_test",
+          "agent_id": "support-refund",
+          "writer_id": "01925000-0000-7000-8000-000000000900",
+          "segment_sequence": 1,
+          "prev_segment_close_hash": "sha256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "first_event_hash": "sha256:Fy-hqf0SSU9e4g2oHv-NSn_N5kq4R2bPZBj0YOc5VCU",
+          "last_event_hash": "sha256:Fy-hqf0SSU9e4g2oHv-NSn_N5kq4R2bPZBj0YOc5VCU",
+          "event_count": 1,
+          "first_sequence": 0,
+          "last_sequence": 0,
+          "opened_at": "2026-09-03T00:00:00.000Z",
+          "closed_at": "2026-09-04T00:00:00.000Z",
+          "signature": {
+            "alg": "Ed25519",
+            "key_id": "ed25519:dCX0wf4a5NooAjscQku0o_FLv0dIA4nKM_m8vm2tk1w",
+            "signed_at": "2026-09-04T00:00:00.500Z",
+            "value": "HdKhrvAFNTdTR63qGVmW7HV8n5S52oE00WmFRHWYqOFBZD4QksyccgxOYcx02ETqlmBEHzclMaL-rxWoLVUGDw"
+          }
+        }
+      ],
+      "expected": {
+        "verified": false,
+        "reason": "prev_segment_close_hash mismatch (INV-023)"
+      }
+    }
+  ]
+}

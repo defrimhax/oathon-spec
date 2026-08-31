@@ -1,0 +1,55 @@
+{
+  "mandate_id": "01924f00-0000-7000-8000-PLACEHOLDER1",
+  "spec_version": "0.1",
+  "organization": {
+    "org_id": "org_PLACEHOLDER",
+    "display_name": "Acme Labs (example)"
+  },
+  "principal": {
+    "subject_id": "subj_PLACEHOLDER_opaque_customer_scoped",
+    "role": "Head of Customer Support"
+  },
+  "agent": {
+    "agent_id": "support-refund",
+    "description": "Automated support refund agent (example)",
+    "environment": "production",
+    "model_dependencies": [
+      { "provider_neutral_descriptor": "llm-primary", "declared_version": "example-2026-01" }
+    ]
+  },
+  "authority": {
+    "permitted_actions": [
+      { "action": "issue_refund", "evaluable_fields": ["/amount/minor_units", "/amount/currency"] },
+      { "action": "send_status_email", "evaluable_fields": [] }
+    ],
+    "forbidden_actions": ["delete_customer_account"],
+    "constraints": [
+      { "action": "issue_refund", "path": "/amount/minor_units", "op": "lte", "value": 20000 },
+      { "action": "issue_refund", "path": "/amount/currency", "op": "eq", "value": "EUR" }
+    ],
+    "approval_triggers": [
+      {
+        "action": "issue_refund",
+        "all": [
+          { "path": "/amount/minor_units", "op": "gt", "value": 10000 },
+          { "path": "/amount/currency", "op": "eq", "value": "EUR" }
+        ]
+      }
+    ]
+  },
+  "oversight": {
+    "review_cadence": "weekly",
+    "escalation_contact_ref": "subj_PLACEHOLDER_escalation"
+  },
+  "validity": {
+    "not_before": "2026-09-01T00:00:00.000Z",
+    "not_after": "2026-12-01T00:00:00.000Z"
+  },
+  "supersedes": null,
+  "signature": {
+    "alg": "Ed25519",
+    "key_id": "ed25519:PLACEHOLDER_NOT_A_REAL_KEY_ID",
+    "signed_at": "2026-08-31T10:15:30.123Z",
+    "value": "PLACEHOLDER_NOT_A_REAL_SIGNATURE"
+  }
+}
