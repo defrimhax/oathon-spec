@@ -1,0 +1,29 @@
+# Locked, reproducible environment for the Oathon SDK + its test suite.
+# Generated from packages/sdk-python/pyproject.toml only (runtime deps +
+# transitives) plus pytest/hypothesis for the vector suite. Exact pins.
+# Usage from the repository root:
+#   pip install -r packages/sdk-python/requirements-lock.txt && pytest
+
+# The SDK itself (local, non-editable):
+./packages/sdk-python
+
+# Runtime dependencies (exact):
+cffi==2.1.1
+cryptography==50.0.1
+jsonschema==4.26.0
+jsonschema-specifications==2025.9.1
+pycparser==3.0
+referencing==0.37.0
+rfc3161-client==1.0.8
+rfc8785==0.1.4
+rpds-py==2026.6.3
+
+# Test suite (exact):
+attrs==26.1.0
+hypothesis==6.167.1
+iniconfig==2.3.0
+packaging==26.3
+pluggy==1.6.0
+Pygments==2.21.0
+pytest==9.1.1
+sortedcontainers==2.4.0
