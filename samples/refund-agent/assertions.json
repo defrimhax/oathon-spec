@@ -1,0 +1,82 @@
+[
+ {
+  "assertion_id": "S-0001",
+  "classification": "OBSERVED",
+  "text": "Sample evidence event action_requested at 2026-09-01T09:10:00.000Z.",
+  "source_refs": [
+   "events/01a05c32-5e80-7014-b0cd-7eda8c07c317"
+  ],
+  "verification_status": "verified",
+  "derivation": null
+ },
+ {
+  "assertion_id": "S-0002",
+  "classification": "OBSERVED",
+  "text": "Sample evidence event action_executed at 2026-09-01T09:15:00.000Z.",
+  "source_refs": [
+   "events/01a05c32-5e80-7c5b-8fe4-56bdc24d5940"
+  ],
+  "verification_status": "verified",
+  "derivation": null
+ },
+ {
+  "assertion_id": "S-0003",
+  "classification": "OBSERVED",
+  "text": "Sample evidence event action_requested at 2026-09-01T09:30:00.000Z.",
+  "source_refs": [
+   "events/01a05c32-5e80-7a75-a253-4a86cf1afe55"
+  ],
+  "verification_status": "verified",
+  "derivation": null
+ },
+ {
+  "assertion_id": "S-0004",
+  "classification": "OBSERVED",
+  "text": "Sample evidence event action_executed at 2026-09-01T09:35:00.000Z.",
+  "source_refs": [
+   "events/01a05c32-5e80-7b5f-bba0-811b7910c65e"
+  ],
+  "verification_status": "verified",
+  "derivation": null
+ },
+ {
+  "assertion_id": "S-0005",
+  "classification": "OBSERVED",
+  "text": "Sample evidence event action_requested at 2026-09-01T09:50:00.000Z.",
+  "source_refs": [
+   "events/01a05c32-5e80-7319-ad30-0415fadefcf0"
+  ],
+  "verification_status": "verified",
+  "derivation": null
+ },
+ {
+  "assertion_id": "S-0006",
+  "classification": "OBSERVED",
+  "text": "Sample evidence event approval_requested at 2026-09-01T09:51:00.000Z.",
+  "source_refs": [
+   "events/01a05c32-5e80-7663-adb4-1b3f6f4c3405"
+  ],
+  "verification_status": "verified",
+  "derivation": null
+ },
+ {
+  "assertion_id": "S-0007",
+  "classification": "OBSERVED",
+  "text": "Sample evidence event approval_denied at 2026-09-01T09:53:00.000Z.",
+  "source_refs": [
+   "events/01a05c32-5e80-7119-9587-92d0d47b353c"
+  ],
+  "verification_status": "verified",
+  "derivation": null
+ },
+ {
+  "assertion_id": "S-0008",
+  "classification": "OBSERVED",
+  "text": "Sample evidence event action_executed at 2026-09-01T09:55:00.000Z.",
+  "source_refs": [
+   "events/01a05c32-5e80-7b11-8447-8efe14374fc0"
+  ],
+  "verification_status": "verified",
+  "derivation": null
+ }
+]

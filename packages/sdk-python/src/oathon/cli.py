@@ -119,7 +119,61 @@ def cmd_verify_bundle(args: argparse.Namespace) -> int:
     if summary["closes_unverified"] or summary["partial_writer_chains"]:
         print(f"  disclosed: unverified closes {summary['closes_unverified']}, "
               f"partial writer chains {summary['partial_writer_chains']}")
+    _print_authority_findings(Path(args.directory), summary)
     return 0
+
+
+def _print_authority_findings(bundle: Path, summary) -> None:
+    """Classify the bundle's operations per SPEC.md §7 (public protocol
+    semantics) and print outside/ambiguous findings. Integrity and authority
+    are separate verdicts: incidents do not change the exit code."""
+    from .authority import evaluate_operation
+
+    try:
+        mandates = {m["mandate_id"]: m
+                    for m in loads_strict((bundle / "mandates.json").read_bytes())}
+        revocations = {r["mandate_id"]: r
+                       for r in loads_strict((bundle / "revocations.json").read_bytes())}
+        events = [loads_strict(line) for line in
+                  (bundle / "events.jsonl").read_bytes().split(b"\n") if line]
+    except (OSError, ValueError):
+        return
+    operations: dict[str, list] = {}
+    for event in events:
+        if event.get("operation_id"):
+            operations.setdefault(event["operation_id"], []).append(event)
+    if not operations:
+        return
+    # Evidence-set coverage for AUTH-009: structurally complete when every
+    # close verified and writer chains are whole (anchoring not required).
+    coverage_complete = not summary["closes_unverified"] and \
+        not summary["partial_writer_chains"]
+    results = []
+    for op_id, op_events in sorted(operations.items()):
+        op_events.sort(key=lambda e: (e["occurred_at"], e["event_id"]))
+        mandate_id = next((e.get("mandate_id") for e in op_events
+                           if e.get("mandate_id")), None)
+        mandate = mandates.get(mandate_id)
+        if mandate is None:
+            continue
+        results.append(evaluate_operation(
+            mandate, op_events, events, coverage_complete,
+            revocation=revocations.get(mandate_id)))
+    if not results:
+        return
+    outside = [r for r in results if r["determination"] == "outside"]
+    ambiguous = [r for r in results if r["determination"] == "ambiguous"]
+    print("AUTHORITY FINDINGS (SPEC.md §7, evaluated over this bundle):")
+    for finding in outside:
+        print(f"  OUTSIDE   {finding['action']} · operation {finding['operation_id']}")
+        for reason in finding["reasons"]:
+            print(f"            - {reason}")
+    for finding in ambiguous:
+        print(f"  AMBIGUOUS {finding['action']} · operation {finding['operation_id']}: "
+              f"{'; '.join(finding['reasons'])}")
+    within = len(results) - len(outside) - len(ambiguous)
+    print(f"  {len(outside)} outside · {len(ambiguous)} ambiguous · {within} within "
+          f"({len(results)} operations)")
 
 
 def main(argv: list[str] | None = None) -> int:

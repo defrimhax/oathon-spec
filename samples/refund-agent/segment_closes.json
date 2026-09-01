@@ -1,0 +1,24 @@
+[
+ {
+  "spec_version": "0.1",
+  "segment_id": "01a05c32-5e80-761a-bbff-3c18a1f03603",
+  "org_id": "org_sample_refunds",
+  "agent_id": "refund-agent",
+  "writer_id": "01a05c32-5e80-7473-90bd-b18c73a19458",
+  "segment_sequence": 0,
+  "prev_segment_close_hash": null,
+  "first_event_hash": "sha256:QPyazqlusOz0_xHQXQgYNa7sVFhfGRjkZVfxwkB-Tmg",
+  "last_event_hash": "sha256:8UZumiiDO-0RDU5sIcaVmdLl1nxL9sm046GPEJR0lIw",
+  "event_count": 8,
+  "first_sequence": 0,
+  "last_sequence": 7,
+  "opened_at": "2026-09-01T09:10:00.000Z",
+  "closed_at": "2026-09-01T09:00:00.000Z",
+  "signature": {
+   "alg": "Ed25519",
+   "key_id": "ed25519:O_f8s6sU3UYhR3dx4WmLgjf9_yOGEKOK7fNV4LyQU48",
+   "signed_at": "2026-09-01T09:00:00.000Z",
+   "value": "gFFVMy4D4f73GSPiHhJ5nqi91S19Jka6J-2sQUUMuq96VWZX6ZrvAzwAZd9K2febwGQ0sA5Mpd-xCLirLTGrCQ"
+  }
+ }
+]

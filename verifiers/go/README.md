@@ -1,7 +1,7 @@
 # Go verifier
 
-**Independently implemented from the specification; see the conformance
-table** ([CONFORMANCE.md](CONFORMANCE.md)). This verifier was written from
+**Built without reference to the Python SDK — implemented from the
+specification alone; see the conformance table** ([CONFORMANCE.md](CONFORMANCE.md)). This verifier was written from
 `CRYPTOGRAPHY.md`, `SPEC.md`, `INVARIANTS.md`, `SECURITY.md` and the
 normative vectors under `spec/vectors/v0.1/` **only** — the Python
 reference SDK was not consulted during its implementation.

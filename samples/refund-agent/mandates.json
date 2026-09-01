@@ -1,0 +1,66 @@
+[
+ {
+  "mandate_id": "01a05ccf-9ab5-7efb-8a69-daa7c9af46f5",
+  "spec_version": "0.1",
+  "organization": {
+   "org_id": "org_sample_refunds",
+   "display_name": "Sample Co"
+  },
+  "principal": {
+   "subject_id": "subj_cfo",
+   "role": "CFO"
+  },
+  "agent": {
+   "agent_id": "refund-agent",
+   "description": "Customer refund agent (sample)",
+   "environment": "sample"
+  },
+  "authority": {
+   "permitted_actions": [
+    {
+     "action": "issue_refund",
+     "evaluable_fields": [
+      "/amount/minor_units",
+      "/amount/currency"
+     ]
+    }
+   ],
+   "forbidden_actions": [
+    "delete_customer_account"
+   ],
+   "constraints": [
+    {
+     "action": "issue_refund",
+     "path": "/amount/minor_units",
+     "op": "lte",
+     "value": 20000
+    }
+   ],
+   "approval_triggers": [
+    {
+     "action": "issue_refund",
+     "all": [
+      {
+       "path": "/amount/minor_units",
+       "op": "gt",
+       "value": 10000
+      }
+     ]
+    }
+   ]
+  },
+  "oversight": {
+   "review_cadence": "weekly"
+  },
+  "validity": {
+   "not_before": "2026-01-01T00:00:00.000Z",
+   "not_after": "2027-01-01T00:00:00.000Z"
+  },
+  "signature": {
+   "alg": "Ed25519",
+   "key_id": "ed25519:EmfAhYXJQduJWuYTbQ5bxnH5GOAUi4BXTZzfPb-OcjA",
+   "signed_at": "2026-09-01T09:00:00.000Z",
+   "value": "8DVmXdh-1at5EXnjqG-CjyGn1VEw-_BFsTuNV93qtNLUodV7rWyQ8vixjU6l3FQY0eQnFJtbsCHfcbh34cxsCg"
+  }
+ }
+]

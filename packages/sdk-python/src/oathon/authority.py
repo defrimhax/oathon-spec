@@ -188,3 +188,21 @@ def evaluate_operation(
         "reasons": reasons,
         "evidence_refs": [e["event_id"] for e in operation_events],
     }
+
+
+def approval_required(mandate: dict[str, Any], action: str,
+                      evaluation_metadata: dict[str, Any]) -> bool | None:
+    """Whether the mandate's approval triggers fire for this action given
+    the event's evaluation_metadata. Returns None when a trigger condition
+    is not machine-evaluable from the evidence (AUTH-006 discipline)."""
+    fired = False
+    for trigger in mandate.get("authority", {}).get("approval_triggers", []):
+        if trigger.get("action") != action:
+            continue
+        results = [_eval_comparison(c, evaluation_metadata)
+                   for c in trigger.get("all", [])]
+        if _UNKNOWN in results:
+            return None
+        if results and all(r == _SAT for r in results):
+            fired = True
+    return fired

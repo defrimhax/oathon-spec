@@ -1,5 +1,7 @@
 # Oathon quickstart (≤30 minutes, no cloud account needed)
 
+Oathon is signed authority + chained actions — this quickstart takes you from a signing key to independently verifiable evidence in five steps.
+
 Everything below runs locally from a checkout of this repository, starting
 at the repository root (DX-003). The Python snippets form **one Python
 session** — run them in the same interpreter (or paste them into one file).

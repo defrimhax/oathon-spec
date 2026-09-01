@@ -3,16 +3,31 @@
 [![CI](https://github.com/def933/oathon-spec/actions/workflows/ci.yml/badge.svg)](https://github.com/def933/oathon-spec/actions/workflows/ci.yml)
 [![conformance](https://github.com/def933/oathon-spec/actions/workflows/conformance.yml/badge.svg)](https://github.com/def933/oathon-spec/actions/workflows/conformance.yml)
 
-Oathon is a protocol for making autonomous AI-agent activity provable after
-the fact. An organization signs immutable **Mandates** declaring what an
-agent may do; the agent's runtime records **evidence events** into
-hash-chained, writer-signed, optionally RFC 3161-timestamped segments; and
-any party holding an **evidence bundle** can verify — offline, with no
-account and no server — that the evidence is intact, what authority was
-declared, and whether recorded actions fell within it. This repository
+**Oathon is signed authority + chained actions.** An organization signs an
+immutable Mandate declaring what an agent may do; the agent's runtime
+records every action into hash-chained, writer-signed, optionally
+RFC 3161-timestamped evidence; and any party holding an evidence bundle can
+verify — offline, with no account and no server — that the evidence is
+intact, what authority was declared, and whether recorded actions fell
+within it. This repository
 contains the complete protocol specification, JSON Schemas, normative test
 vectors, and the reference Python SDK with its CLI. It is licensed
 Apache-2.0.
+
+## See an incident in one command
+
+The repo ships a ready sample: a refund agent with a 20,000 limit and a
+human-approval trigger — including one over-limit refund and one refund
+executed after a denied approval.
+
+```bash
+pip install -e packages/sdk-python
+oathon verify-bundle samples/refund-agent/
+```
+
+Integrity verifies, and the authority findings print both incidents with
+their reasons (AUTH-003/AUTH-005). `samples/refund-agent/sample-bundle.zip`
+drops straight into the browser verifier.
 
 ## Verify a bundle in 60 seconds
 

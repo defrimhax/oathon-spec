@@ -1,0 +1,19 @@
+[
+ {
+  "authorization_id": "01a05ccf-9abd-770b-87fe-c978f6538163",
+  "spec_version": "0.1",
+  "org_id": "org_sample_refunds",
+  "agent_id": "refund-agent",
+  "writer_id": "01a05c32-5e80-7473-90bd-b18c73a19458",
+  "writer_key_id": "ed25519:O_f8s6sU3UYhR3dx4WmLgjf9_yOGEKOK7fNV4LyQU48",
+  "writer_public_key": "Ct92aBGMdS43n5xsCkb4-UJuM6-C3pmvFBJaiGvab78",
+  "not_before": "2026-01-01T00:00:00.000Z",
+  "not_after": "2027-01-01T00:00:00.000Z",
+  "signature": {
+   "alg": "Ed25519",
+   "key_id": "ed25519:EmfAhYXJQduJWuYTbQ5bxnH5GOAUi4BXTZzfPb-OcjA",
+   "signed_at": "2026-09-01T11:51:44.573Z",
+   "value": "YgvUwuZqczTs1bAFNmjnMM6URxfvbMsIM9aRCWNRL-BqZxj4hLj4VtQhMsz3yS33Saexk9I5lzKBj24f5C41Cw"
+  }
+ }
+]

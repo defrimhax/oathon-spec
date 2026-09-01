@@ -1,6 +1,6 @@
 # oathon-sdk
 
-Reference SDK and CLI for the **Oathon protocol**: organizations sign
+**Signed authority + chained actions.** Reference SDK and CLI for the Oathon protocol: organizations sign
 immutable Mandates declaring what an autonomous AI agent may do; agent
 runtimes record hash-chained, writer-signed evidence; anyone holding an
 evidence bundle can verify it **offline** — no server, no account.

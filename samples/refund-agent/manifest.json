@@ -1,0 +1,17 @@
+{
+ "bundle_id": "B-01a05ccf-9abd-7149-9414-195b5610001c",
+ "report_id": "SAMPLE-01a05ccf-9abd-74e7-a2f7-8cc7c5e62b2b",
+ "created_at": "2026-09-01T10:00:00.000Z",
+ "spec_version": "0.1",
+ "artifacts": {
+  "mandates.json": "sha256:UF8QgIG9WfsAN7v_6pUUciRoPfo4EGhLnq8a-2Nc2PI",
+  "revocations.json": "sha256:-EiAzBQReHHOcUPk-pMHlnGAevazb9WaEKo8SxMoBNk",
+  "key_records.json": "sha256:L0FFuAdAHdSSzJMAC_EqvlMel8pna2fqNTaUuDqH3iA",
+  "writer_auths.json": "sha256:0fceEQqmGPhJ4_Xc6QkoN1ax3SlP-0xRtVE9sLPfKzw",
+  "events.jsonl": "sha256:Vcjk6H1_k19NiYzJzJxlQlHY0EG8TTDxvZ5dyXpdESs",
+  "segment_closes.json": "sha256:-8R4e6wvdoVi2zLE2YoKGP18Wv6KO9QHi57Eklkqxgc",
+  "anchors.json": "sha256:-EiAzBQReHHOcUPk-pMHlnGAevazb9WaEKo8SxMoBNk",
+  "assertions.json": "sha256:L7Tact9g9atNVbGanCMZn-AvY-vs44ZthxphkPiqElg",
+  "report.html": "sha256:femzsMXPdau67Cv32sLVho1kF29jjjbPyA6ykht7nxE"
+ }
+}
