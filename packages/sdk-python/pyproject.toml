@@ -26,8 +26,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/defrimhax/oathon-spec"
-Specification = "https://github.com/defrimhax/oathon-spec/blob/main/CRYPTOGRAPHY.md"
+Homepage = "https://github.com/def933/oathon-spec"
+Specification = "https://github.com/def933/oathon-spec/blob/main/CRYPTOGRAPHY.md"
 
 [project.optional-dependencies]
 test = ["pytest>=9", "hypothesis>=6"]

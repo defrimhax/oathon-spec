@@ -19,7 +19,7 @@ pinned TSA certificates) plus the crash-recoverable local evidence spool.
 Protocol **v0.1 is frozen**; wire identifiers remain `WARRANT-*-V0.1` for
 compatibility (the product's former name — see the protocol identifier note
 in the specification). Full spec, JSON Schemas, and normative known-answer
-vectors: <https://github.com/defrimhax/oathon-spec>.
+vectors: <https://github.com/def933/oathon-spec>.
 
 Oathon proves evidence integrity **after** durable recording under stated
 conditions — see the specification's SECURITY.md for the honest list of

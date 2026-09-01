@@ -1,7 +1,7 @@
 # Oathon protocol specification and SDK
 
-[![CI](https://github.com/defrimhax/oathon-spec/actions/workflows/ci.yml/badge.svg)](https://github.com/defrimhax/oathon-spec/actions/workflows/ci.yml)
-[![conformance](https://github.com/defrimhax/oathon-spec/actions/workflows/conformance.yml/badge.svg)](https://github.com/defrimhax/oathon-spec/actions/workflows/conformance.yml)
+[![CI](https://github.com/def933/oathon-spec/actions/workflows/ci.yml/badge.svg)](https://github.com/def933/oathon-spec/actions/workflows/ci.yml)
+[![conformance](https://github.com/def933/oathon-spec/actions/workflows/conformance.yml/badge.svg)](https://github.com/def933/oathon-spec/actions/workflows/conformance.yml)
 
 Oathon is a protocol for making autonomous AI-agent activity provable after
 the fact. An organization signs immutable **Mandates** declaring what an

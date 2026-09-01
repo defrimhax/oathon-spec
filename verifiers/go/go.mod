@@ -1,4 +1,4 @@
-module github.com/defrimhax/oathon-spec/verifiers/go
+module github.com/def933/oathon-spec/verifiers/go
 
 go 1.22
 
