@@ -37,7 +37,8 @@ def main() -> int:
             # Hermetic: only the audit workdir's own venv plus system paths.
             # (Run 1 leaked the repo's development venv here, which masked a
             # failure — recorded as audit-tooling friction finding F5.)
-            env_path = f"{work / '.venv' / 'bin'}:/usr/bin:/bin:/usr/local/bin"
+            env_path = (f"{work / '.venv' / 'bin'}:"
+                        f"{Path(sys.executable).parent}:/usr/bin:/bin:/usr/local/bin")
             proc = subprocess.run(
                 ["sh", "-c", code], cwd=work, capture_output=True, text=True,
                 env={"PATH": env_path, "HOME": str(Path.home())},

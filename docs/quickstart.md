@@ -6,6 +6,8 @@ session** — run them in the same interpreter (or paste them into one file).
 The scripted equivalent is `scripts/quickstart_audit.py`, which executes
 exactly the commands below and is run in CI-style audits (DX-002).
 
+**Prerequisite:** Python 3.12 or newer as `python3` (check with `python3 --version`).
+
 ## 1. Install
 
 ```bash
